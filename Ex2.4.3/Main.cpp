@@ -14,6 +14,8 @@
 // Rotation amounts
 static GLfloat xRot = 0.0f;
 static GLfloat yRot = 0.0f;
+
+void RenderASphere(float fRadius, int iSlice = 4, int iStack = 4);
 // Called to draw scene
 void RenderScene(void)
 {
@@ -59,11 +61,7 @@ void RenderScene(void)
 	//	z += 0.5f;
 	//	curSize += step;
 	//}
-	glBegin(GL_TRIANGLE_STRIP);
-	glVertex3f(10, 10, 10);
-	glVertex3f(-10, 10, 10);
-	glVertex3f(10, -10, -10);
-	glEnd();
+	RenderASphere(40);
 	// Restore matrix state
 	glPopMatrix();
 
@@ -152,4 +150,13 @@ int main(int argc, char* argv[])
 	glutMainLoop();
 
 	return 0;
+}
+
+void RenderASphere(float fRadius, int iSlice, int iStack)
+{
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex3f(10, 10, 10);
+	glVertex3f(-10, 10, 10);
+	glVertex3f(10, -10, 10);
+	glEnd();
 }
