@@ -17,10 +17,10 @@ static GLfloat yRot = 0.0f;
 // Called to draw scene
 void RenderScene(void)
 {
-	GLfloat x, y, z, angle; // Storeage for coordinates and angles
-	GLfloat sizes[2];	 // Store supported point size range
-	GLfloat step;		 // Store supported point size increments
-	GLfloat curSize;	 // Store current size
+	//GLfloat x, y, z, angle; // Storeage for coordinates and angles
+	//GLfloat sizes[2];	 // Store supported point size range
+	//GLfloat step;		 // Store supported point size increments
+	//GLfloat curSize;	 // Store current size
 
 	// Clear the window with current clearing color
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -30,36 +30,40 @@ void RenderScene(void)
 	glRotatef(xRot, 1.0f, 0.0f, 0.0f);
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);
 
-	// Get supported point size range and step size
-	glGetFloatv(GL_POINT_SIZE_RANGE, sizes);
-	glGetFloatv(GL_POINT_SIZE_GRANULARITY, &step);
+	//// Get supported point size range and step size
+	//glGetFloatv(GL_POINT_SIZE_RANGE, sizes);
+	//glGetFloatv(GL_POINT_SIZE_GRANULARITY, &step);
 
-	// Set the initial point size
-	curSize = sizes[0];
+	//// Set the initial point size
+	//curSize = sizes[0];
 
-	// Set beginning z coordinate
-	z = -50.0f;
+	//// Set beginning z coordinate
+	//z = -50.0f;
 
-	// Loop around in a circle three times
-	for (angle = 0.0f; angle <= (2.0f*3.1415f)*3.0f; angle += 0.1f)
-	{
-		// Calculate x and y values on the circle
-		x = 50.0f*cos(angle);
-		y = 50.0f*sin(angle);
+	//// Loop around in a circle three times
+	//for (angle = 0.0f; angle <= (2.0f*3.1415f)*3.0f; angle += 0.1f)
+	//{
+	//	// Calculate x and y values on the circle
+	//	x = 50.0f*cos(angle);
+	//	y = 50.0f*sin(angle);
 
-		// Specify the point size before the primative is specified
-		glPointSize(curSize);
+	//	// Specify the point size before the primative is specified
+	//	glPointSize(curSize);
 
-		// Draw the point
-		glBegin(GL_POINTS);
-		glVertex3f(x, y, z);
-		glEnd();
+	//	// Draw the point
+	//	glBegin(GL_POINTS);
+	//	glVertex3f(x, y, z);
+	//	glEnd();
 
-		// Bump up the z value and the point size
-		z += 0.5f;
-		curSize += step;
-	}
-
+	//	// Bump up the z value and the point size
+	//	z += 0.5f;
+	//	curSize += step;
+	//}
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex3f(10, 10, 10);
+	glVertex3f(-10, 10, 10);
+	glVertex3f(10, -10, -10);
+	glEnd();
 	// Restore matrix state
 	glPopMatrix();
 
