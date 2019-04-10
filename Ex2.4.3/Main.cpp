@@ -2,10 +2,32 @@
 // OpenGL SuperBible, Chapter 4
 // Demonstrates OpenGL Primative GL_POINTS with point size
 // Program by Richard S. Wright Jr.
-
+#include <cmath>
+#include <vector>
 #include "glut.h"
-#include <math.h>
+template <typename TYPE>
+class GeometryVector
+{
 
+public:
+
+	GeometryVector(const TYPE x_ = TYPE(), const TYPE y_ = TYPE(), const TYPE z_ = TYPE());
+
+	const TYPE x;
+	const TYPE y;
+	const TYPE z;
+
+};
+template <typename TYPE>
+GeometryVector<TYPE>::GeometryVector(const TYPE x_, const TYPE y_, const TYPE z_)
+	:
+	x(x_),
+	y(y_),
+	z(z_)
+{
+}
+std::vector<GeometryVector<float> > geometryData_;
+std::vector<unsigned short> indexData_;
 
 
 // Define a constant for the value of PI
@@ -15,11 +37,11 @@
 static GLfloat xRot = 0.0f;
 static GLfloat yRot = 0.0f;
 
-void RenderASphere(float fRadius, int iSlice = 4, int iStack = 4);
+void RenderASphere(float fRadius, int iSlice = 10, int iStack = 10);
 // Called to draw scene
 void RenderScene(void)
 {
-	
+
 
 	// Clear the window with current clearing color
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -29,7 +51,7 @@ void RenderScene(void)
 	glRotatef(xRot, 1.0f, 0.0f, 0.0f);
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);
 
-	
+
 	RenderASphere(40);
 	// Restore matrix state
 	glPopMatrix();
@@ -110,7 +132,7 @@ int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutCreateWindow("Points Size Example");
+	glutCreateWindow("Sphere");
 	glutReshapeFunc(ChangeSize);
 	glutSpecialFunc(SpecialKeys);
 	glutDisplayFunc(RenderScene);
@@ -123,9 +145,35 @@ int main(int argc, char* argv[])
 
 void RenderASphere(float fRadius, int iSlice, int iStack)
 {
-	glBegin(GL_TRIANGLE_STRIP);
-	glVertex3f(10, 10, 10);
-	glVertex3f(-10, 10, 10);
-	glVertex3f(10, -10, 10);
-	glEnd();
+
+	int  coorx, coory, coorz;
+	
+	for (unsigned int stackNumber = 0; stackNumber < iStack; stackNumber++)
+	{
+		
+		for (unsigned int sliceNumber = 0; sliceNumber < iSlice; sliceNumber++)
+		{
+			float theta = stackNumber * PI / iStack;
+			float phi = sliceNumber * 2 * PI / iSlice;
+			float sinTheta = std::sin(theta);
+			float sinPhi = std::sin(phi);
+			float cosTheta = std::cos(theta);
+			float cosPhi = std::cos(phi);
+			geometryData_.push_back(GeometryVector<float>(fRadius * cosPhi * sinTheta, fRadius * sinPhi * sinTheta, fRadius * cosTheta));
+		}
+	}
+	for (unsigned int stackNumber = 0; stackNumber < iStack; ++stackNumber)
+	{
+		for (unsigned int sliceNumber = 0; sliceNumber <= iSlice; ++sliceNumber)
+		{
+			indexData_.push_back((stackNumber * iSlice) + (sliceNumber % iSlice));
+			indexData_.push_back(((stackNumber + 1) * iSlice) + (sliceNumber % iSlice));
+		}
+	}
+	
+	glVertexPointer(3, GL_FLOAT, 0, &geometryData_[0]);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glDrawElements(GL_TRIANGLE_STRIP, indexData_.size(), GL_UNSIGNED_SHORT, &indexData_[0]);
+
+
 }
