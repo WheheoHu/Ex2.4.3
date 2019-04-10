@@ -136,7 +136,8 @@ int main(int argc, char* argv[])
 	glutReshapeFunc(ChangeSize);
 	glutSpecialFunc(SpecialKeys);
 	glutDisplayFunc(RenderScene);
-
+	glPolygonMode(GL_FRONT, GL_LINE);
+	glPolygonMode(GL_BACK, GL_LINE);
 	SetupRC();
 	glutMainLoop();
 
@@ -146,11 +147,11 @@ int main(int argc, char* argv[])
 void RenderASphere(float fRadius, int iSlice, int iStack)
 {
 
-	int  coorx, coory, coorz;
-	
+
+
 	for (unsigned int stackNumber = 0; stackNumber < iStack; stackNumber++)
 	{
-		
+
 		for (unsigned int sliceNumber = 0; sliceNumber < iSlice; sliceNumber++)
 		{
 			float theta = stackNumber * PI / iStack;
@@ -170,7 +171,7 @@ void RenderASphere(float fRadius, int iSlice, int iStack)
 			indexData_.push_back(((stackNumber + 1) * iSlice) + (sliceNumber % iSlice));
 		}
 	}
-	
+
 	glVertexPointer(3, GL_FLOAT, 0, &geometryData_[0]);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glDrawElements(GL_TRIANGLE_STRIP, indexData_.size(), GL_UNSIGNED_SHORT, &indexData_[0]);
