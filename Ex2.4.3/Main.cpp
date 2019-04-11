@@ -65,7 +65,7 @@ void RenderScene(void)
 void SetupRC()
 {
 	// Black background
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.f, 1.f, 1.f, 1.0f);
 
 	// Set drawing color to green
 	glColor3f(0.0f, 1.0f, 0.0f);
